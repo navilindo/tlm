@@ -527,4 +527,266 @@ function cleanup_old_data() {
     // Clean up expired password reset tokens
     $db->execute("UPDATE users SET reset_token = NULL, reset_expires = NULL WHERE reset_expires < NOW()");
 }
+
+// ==================== STUDENT DASHBOARD FUNCTIONS ====================
+
+/**
+ * Get recent announcements for student
+ */
+function get_recent_announcements($user_id, $limit = 5) {
+    $db = getDB();
+    
+    // Get announcements for courses the user is enrolled in
+    $sql = "SELECT DISTINCT a.*, c.title as course_title
+            FROM announcements a
+            JOIN enrollments e ON a.course_id = e.course_id
+            JOIN courses c ON a.course_id = c.id
+            WHERE e.user_id = ? AND a.is_published = TRUE AND (a.expires_at IS NULL OR a.expires_at > NOW())
+            ORDER BY a.published_at DESC
+            LIMIT ?";
+    
+    return $db->fetchAll($sql, [$user_id, $limit]);
+}
+
+/**
+ * Get student statistics
+ */
+function get_student_stats($user_id) {
+    $db = getDB();
+    
+    $stats = [];
+    
+    // Enrolled courses
+    $stats['enrolled_courses'] = $db->fetch("SELECT COUNT(*) as count FROM enrollments WHERE user_id = ? AND status = 'active'", [$user_id])['count'];
+    
+    // Completed lessons
+    $stats['completed_lessons'] = $db->fetch("SELECT COUNT(*) as count FROM lesson_progress WHERE user_id = ?", [$user_id])['count'];
+    
+    // Average progress
+    $avg_progress = $db->fetch("SELECT AVG(progress_percentage) as avg_progress FROM enrollments WHERE user_id = ? AND status = 'active'", [$user_id]);
+    $stats['average_progress'] = round($avg_progress['avg_progress'] ?? 0, 1);
+    
+    // Pending assignments
+    $stats['pending_assignments'] = $db->fetch("
+        SELECT COUNT(*) as count 
+        FROM assignments a
+        JOIN lessons l ON a.lesson_id = l.id
+        JOIN enrollments e ON l.course_id = e.course_id
+        LEFT JOIN assignment_submissions s ON a.id = s.assignment_id AND s.user_id = ?
+        WHERE e.user_id = ? AND s.id IS NULL AND (a.due_date IS NULL OR a.due_date > NOW())
+    ", [$user_id, $user_id])['count'];
+    
+    return $stats;
+}
+
+// ==================== ADMIN DASHBOARD FUNCTIONS ====================
+
+/**
+ * Get recent users
+ */
+function get_recent_users($limit = 10) {
+    $db = getDB();
+    return $db->fetchAll("SELECT * FROM users ORDER BY created_at DESC LIMIT ?", [$limit]);
+}
+
+/**
+ * Get recent courses
+ */
+function get_recent_courses($limit = 10) {
+    $db = getDB();
+    return $db->fetchAll("
+        SELECT c.*, u.first_name, u.last_name 
+        FROM courses c 
+        JOIN users u ON c.instructor_id = u.id 
+        ORDER BY c.created_at DESC 
+        LIMIT ?
+    ", [$limit]);
+}
+
+/**
+ * Get pending courses
+ */
+function get_pending_courses($limit = 10) {
+    $db = getDB();
+    return $db->fetchAll("
+        SELECT c.*, u.first_name, u.last_name 
+        FROM courses c 
+        JOIN users u ON c.instructor_id = u.id 
+        WHERE c.approval_status = 'pending' 
+        ORDER BY c.created_at DESC 
+        LIMIT ?
+    ", [$limit]);
+}
+
+/**
+ * Get recent system activity
+ */
+function get_recent_activity($limit = 20) {
+    $db = getDB();
+    return $db->fetchAll("
+        SELECT al.*, u.first_name, u.last_name, u.email
+        FROM activity_log al
+        LEFT JOIN users u ON al.user_id = u.id
+        ORDER BY al.created_at DESC
+        LIMIT ?
+    ", [$limit]);
+}
+
+/**
+ * Get activity icon
+ */
+function get_activity_icon($action) {
+    $icons = [
+        'user_registered' => 'user-plus',
+        'successful_login' => 'sign-in-alt',
+        'logout' => 'sign-out-alt',
+        'course_created' => 'book',
+        'course_enrolled' => 'user-graduate',
+        'assignment_submitted' => 'file-upload',
+        'password_reset' => 'key',
+        'email_verified' => 'envelope'
+    ];
+    
+    return $icons[$action] ?? 'circle';
+}
+
+/**
+ * Get disk usage percentage
+ */
+function get_disk_usage() {
+    $total = disk_total_space('.');
+    $free = disk_free_space('.');
+    return round((($total - $free) / $total) * 100, 1);
+}
+
+/**
+ * Get memory usage percentage
+ */
+function get_memory_usage() {
+    return round(memory_get_peak_usage(true) / 1024 / 1024, 1);
+}
+
+// ==================== INSTRUCTOR DASHBOARD FUNCTIONS ====================
+
+/**
+ * Get instructor statistics
+ */
+function get_instructor_stats($instructor_id) {
+    $db = getDB();
+    
+    $stats = [];
+    
+    // Total courses
+    $total_courses = $db->fetch("SELECT COUNT(*) as count FROM courses WHERE instructor_id = ?", [$instructor_id]);
+    $stats['total_courses'] = $total_courses['count'];
+    
+    // Published courses
+    $published_courses = $db->fetch("SELECT COUNT(*) as count FROM courses WHERE instructor_id = ? AND is_published = TRUE", [$instructor_id]);
+    $stats['published_courses'] = $published_courses['count'];
+    
+    // Total students
+    $total_students = $db->fetch("
+        SELECT COUNT(DISTINCT e.user_id) as count 
+        FROM enrollments e 
+        JOIN courses c ON e.course_id = c.id 
+        WHERE c.instructor_id = ? AND e.status = 'active'
+    ", [$instructor_id]);
+    $stats['total_students'] = $total_students['count'];
+    
+    // New students this month
+    $new_students = $db->fetch("
+        SELECT COUNT(DISTINCT e.user_id) as count 
+        FROM enrollments e 
+        JOIN courses c ON e.course_id = c.id 
+        WHERE c.instructor_id = ? AND e.enrollment_date >= DATE_SUB(NOW(), INTERVAL 1 MONTH) AND e.status = 'active'
+    ", [$instructor_id]);
+    $stats['new_students_this_month'] = $new_students['count'];
+    
+    // Total revenue
+    $revenue = $db->fetch("
+        SELECT COALESCE(SUM(c.price), 0) as total 
+        FROM enrollments e 
+        JOIN courses c ON e.course_id = c.id 
+        WHERE c.instructor_id = ? AND e.status = 'active' AND c.price > 0
+    ", [$instructor_id]);
+    $stats['total_revenue'] = '$' . number_format($revenue['total'], 2);
+    
+    // Revenue this month
+    $revenue_month = $db->fetch("
+        SELECT COALESCE(SUM(c.price), 0) as total 
+        FROM enrollments e 
+        JOIN courses c ON e.course_id = c.id 
+        WHERE c.instructor_id = ? AND e.enrollment_date >= DATE_SUB(NOW(), INTERVAL 1 MONTH) 
+        AND e.status = 'active' AND c.price > 0
+    ", [$instructor_id]);
+    $stats['revenue_this_month'] = $revenue_month['total'];
+    
+    // Average completion rate
+    $completion = $db->fetch("
+        SELECT AVG(progress_percentage) as avg_progress 
+        FROM enrollments e 
+        JOIN courses c ON e.course_id = c.id 
+        WHERE c.instructor_id = ? AND e.status = 'active'
+    ", [$instructor_id]);
+    $stats['completion_rate'] = round($completion['avg_progress'] ?? 0, 1);
+    
+    return $stats;
+}
+
+/**
+ * Get instructor courses
+ */
+function get_instructor_courses($instructor_id) {
+    $db = getDB();
+    
+    $sql = "SELECT c.*,
+                   COUNT(DISTINCT e.id) as enrolled_students,
+                   COUNT(DISTINCT l.id) as total_lessons,
+                   AVG(e.progress_percentage) as average_progress
+            FROM courses c
+            LEFT JOIN enrollments e ON c.id = e.course_id AND e.status = 'active'
+            LEFT JOIN lessons l ON c.id = l.course_id AND l.is_published = TRUE
+            WHERE c.instructor_id = ?
+            GROUP BY c.id
+            ORDER BY c.created_at DESC";
+    
+    return $db->fetchAll($sql, [$instructor_id]);
+}
+
+/**
+ * Get recent students
+ */
+function get_recent_students($instructor_id, $limit = 10) {
+    $db = getDB();
+    
+    $sql = "SELECT u.*, e.enrollment_date, c.title as course_title
+            FROM enrollments e
+            JOIN users u ON e.user_id = u.id
+            JOIN courses c ON e.course_id = c.id
+            WHERE c.instructor_id = ?
+            ORDER BY e.enrollment_date DESC
+            LIMIT ?";
+    
+    return $db->fetchAll($sql, [$instructor_id, $limit]);
+}
+
+/**
+ * Get pending assignments
+ */
+function get_pending_assignments($instructor_id, $limit = 10) {
+    $db = getDB();
+    
+    $sql = "SELECT s.id as submission_id, a.title as assignment_title,
+                   u.first_name, u.last_name, s.submitted_at
+            FROM assignment_submissions s
+            JOIN assignments a ON s.assignment_id = a.id
+            JOIN lessons l ON a.lesson_id = l.id
+            JOIN courses c ON l.course_id = c.id
+            JOIN users u ON s.user_id = u.id
+            WHERE c.instructor_id = ? AND s.grade IS NULL
+            ORDER BY s.submitted_at ASC
+            LIMIT ?";
+    
+    return $db->fetchAll($sql, [$instructor_id, $limit]);
+}
 ?>
