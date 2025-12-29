@@ -163,20 +163,24 @@ function logout_user() {
 /**
  * Check if user is logged in
  */
-function is_logged_in() {
-    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+if (!function_exists('is_logged_in')) {
+    function is_logged_in() {
+        return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+    }
 }
 
 /**
  * Get current user data
  */
-function get_current_user() {
-    if (!is_logged_in()) {
-        return null;
+if (!function_exists('get_current_user')) {
+    function get_current_user() {
+        if (!is_logged_in()) {
+            return null;
+        }
+        
+        $db = getDB();
+        return $db->fetch("SELECT * FROM users WHERE id = ?", [$_SESSION['user_id']]);
     }
-    
-    $db = getDB();
-    return $db->fetch("SELECT * FROM users WHERE id = ?", [$_SESSION['user_id']]);
 }
 
 /**

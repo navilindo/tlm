@@ -95,11 +95,11 @@ define('ASSETS_PATH', __DIR__ . '/../assets/');
 // Set timezone
 date_default_timezone_set(DEFAULT_TIMEZONE);
 
-// Include essential functions
-require_once INCLUDES_PATH . 'functions.php';
+// Include essential functions (order matters!)
 require_once INCLUDES_PATH . 'database.php';
-require_once INCLUDES_PATH . 'auth.php';
 require_once INCLUDES_PATH . 'security.php';
+require_once INCLUDES_PATH . 'auth.php';
+require_once INCLUDES_PATH . 'functions.php';
 
 // Initialize CSRF protection
 initialize_csrf();

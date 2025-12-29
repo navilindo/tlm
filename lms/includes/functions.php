@@ -500,14 +500,28 @@ function get_system_stats() {
     // Total users
     $stats['total_users'] = $db->fetch("SELECT COUNT(*) as count FROM users WHERE status = 'active'")['count'];
     
+    // New users today
+    $stats['new_users_today'] = $db->fetch("SELECT COUNT(*) as count FROM users WHERE DATE(created_at) = CURDATE()")['count'];
+    
     // Total courses
     $stats['total_courses'] = $db->fetch("SELECT COUNT(*) as count FROM courses WHERE is_published = TRUE")['count'];
+    
+    // Pending courses
+    $stats['pending_courses'] = $db->fetch("SELECT COUNT(*) as count FROM courses WHERE approval_status = 'pending'")['count'];
     
     // Total enrollments
     $stats['total_enrollments'] = $db->fetch("SELECT COUNT(*) as count FROM enrollments WHERE status = 'active'")['count'];
     
-    // Active courses this month
-    $stats['active_courses_month'] = $db->fetch("SELECT COUNT(*) as count FROM enrollments WHERE enrollment_date >= DATE_SUB(NOW(), INTERVAL 1 MONTH)")['count'];
+    // Enrollments this month
+    $stats['enrollments_this_month'] = $db->fetch("SELECT COUNT(*) as count FROM enrollments WHERE enrollment_date >= DATE_SUB(NOW(), INTERVAL 1 MONTH)")['count'];
+    
+    // Active students (students who have logged in within last 30 days)
+    $stats['active_students'] = $db->fetch("
+        SELECT COUNT(DISTINCT user_id) as count 
+        FROM activity_log 
+        WHERE action = 'successful_login' 
+        AND created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+    ")['count'];
     
     return $stats;
 }
