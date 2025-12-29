@@ -83,24 +83,24 @@ function verify_password($password, $hash) {
 }
 
 /**
- * Check if user is logged in
+ * Check if user is logged in (wrapper function)
  */
-function is_logged_in() {
-    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+function is_user_logged_in() {
+    return is_logged_in();
 }
 
 /**
  * Check if user has specific role
  */
 function has_role($role) {
-    return is_logged_in() && isset($_SESSION['user_role']) && $_SESSION['user_role'] === $role;
+    return is_user_logged_in() && isset($_SESSION['user_role']) && $_SESSION['user_role'] === $role;
 }
 
 /**
  * Check if user has any of the specified roles
  */
 function has_any_role($roles) {
-    if (!is_logged_in() || !isset($_SESSION['user_role'])) {
+    if (!is_user_logged_in() || !isset($_SESSION['user_role'])) {
         return false;
     }
     return in_array($_SESSION['user_role'], (array) $roles);
@@ -110,7 +110,7 @@ function has_any_role($roles) {
  * Require login
  */
 function require_login() {
-    if (!is_logged_in()) {
+    if (!is_user_logged_in()) {
         header('Location: ' . SITE_URL . '/auth/login.php');
         exit;
     }
