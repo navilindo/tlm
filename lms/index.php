@@ -136,7 +136,7 @@ $stats = get_system_stats();
                 <div class="col-md-3 mb-4">
                     <div class="stats-card bg-warning text-dark rounded p-4">
                         <i class="fas fa-chart-line fa-3x mb-3"></i>
-                        <div class="stats-number"><?= number_format($stats['active_courses_month']) ?></div>
+                        <div class="stats-number"><?= number_format($stats['enrollments_this_month']) ?></div>
                         <div class="stats-label">New Enrollments This Month</div>
                     </div>
                 </div>
