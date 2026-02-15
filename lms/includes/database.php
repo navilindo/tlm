@@ -43,6 +43,7 @@ class Database {
             $this->connection = new PDO($dsn, $this->username, $this->password, $options);
         } catch (PDOException $e) {
             error_log("Database connection failed: " . $e->getMessage());
+            die("DEBUG: " . $e->getMessage());
             throw new Exception("Database connection failed");
         }
     }

@@ -22,7 +22,7 @@ define('DB_PASS', 'toor');
 define('DB_CHARSET', 'utf8mb4');
 
 // Site Configuration
-define('SITE_URL', 'http://localhost/lms');
+define('SITE_URL', 'http://localhost:3000/lms');
 define('SITE_NAME', 'LMS Platform');
 define('SITE_DESCRIPTION', 'Online Learning Management System');
 
