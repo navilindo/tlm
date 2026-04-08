@@ -23,7 +23,7 @@ define('DB_CHARSET', 'utf8mb4');
 
 // Site Configuration
 define('SITE_URL', 'http://localhost:3000/lms');
-define('SITE_NAME', 'The Living Miracles');
+define('SITE_NAME', 'The Living Miracles Academy');
 define('SITE_DESCRIPTION', 'Online Learning');// Security Configuration
 define('CSRF_TOKEN_NAME', 'csrf_token');
 define('SESSION_TIMEOUT', 7200); // 2 hours

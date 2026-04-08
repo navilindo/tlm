@@ -81,7 +81,7 @@ $stats = get_system_stats();
     <!-- Hero Section -->
     <section class="hero-section bg-gradient-primary text-white py-5">
         <div class="container">
-            <div class="row align-items-center min-vh-75">
+            <div class="row align-items-center min-vh-75 py-5">
                 <div class="col-lg-6">
                     <h1 class="display-4 fw-bold mb-4">
                         Learn Without Limits
@@ -109,7 +109,7 @@ $stats = get_system_stats();
     </section>
 
     <!-- Stats Section -->
-    <section class="py-5 bg-light">
+    <section class="py-5 my-5 bg-light">
         <div class="container">
             <div class="row text-center">
                 <div class="col-md-3 mb-4">
@@ -311,11 +311,11 @@ $stats = get_system_stats();
     <!-- About Section -->
     <section id="about" class="py-5 bg-light">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
+            <div class="row align-items-center py-5 my-5">
+                <div class="col-lg-8">
                     <h2 class="display-5 fw-bold mb-4">Why Choose Our Platform?</h2>
                     <div class="row g-4">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="d-flex align-items-start">
                                 <i class="fas fa-chalkboard-teacher fa-2x text-primary me-3 mt-1"></i>
                                 <div>
@@ -333,7 +333,7 @@ $stats = get_system_stats();
                                 </div>
                             </div>
                         </div-->
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="d-flex align-items-start">
                                 <i class="fas fa-clock fa-2x text-info me-3 mt-1"></i>
                                 <div>
@@ -342,7 +342,7 @@ $stats = get_system_stats();
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="d-flex align-items-start">
                                 <i class="fas fa-users fa-2x text-warning me-3 mt-1"></i>
                                 <div>
@@ -353,7 +353,7 @@ $stats = get_system_stats();
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <div class="text-center">
                         <i class="fas fa-graduation-cap fa-10x text-primary opacity-75"></i>
                     </div>
