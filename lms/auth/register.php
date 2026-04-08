@@ -104,17 +104,17 @@ if ($flash) {
 </head>
 <body class="auth-page">
     <div class="container-fluid h-100">
-        <div class="row h-100">
+        <div class="row h-100 p-5 m-5">
             <!-- Left side - Branding -->
-            <div class="col-lg-6 d-flex align-items-center justify-content-center bg-success text-white">
+            <div class="col-lg-6 d-flex align-items-center justify-content-center bg-success text-white p-5">
                 <div class="text-center">
-                    <h1><i class="fas fa-user-plus me-3"></i></h1>
+                    <h1><i class="fas fa-user-plus me-3 py-5 fa-2x"></i></h1>
                     <h1 class="display-4 fw-bold mb-4">                        
                         Join <?= SITE_NAME ?>
                     </h1>
                     <p class="lead mb-4">Start your learning journey today</p>
-                    <div class="row">
-                        <div class="col-md-4">
+                    <div class="row py-5">
+                        <div class="col-md-6">
                             <i class="fas fa-graduation-cap fa-3x mb-3"></i>
                             <h5>Learn</h5>
                             <p>Access thousands of courses from expert instructors</p>
@@ -124,19 +124,19 @@ if ($flash) {
                             <h5>Earn</h5>
                             <p>Get certificates upon completion</p>
                         </div-->
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <i class="fas fa-trophy fa-3x mb-3"></i>
                             <h5>Grow</h5>
-                            <p>Advance your career with new skills</p>
+                            <p>Make your life better with new knowledge</p>
                         </div>
                     </div>
                 </div>
             </div>
             
             <!-- Right side - Registration Form -->
-            <div class="col-lg-6 d-flex align-items-center justify-content-center">
+            <div class="col-lg-6 d-flex align-items-center justify-content-center p-1">
                 <div class="register-form-container">
-                    <div class="text-center mb-4">
+                    <div class="text-center mb-5">
                         <h2 class="fw-bold text-dark">Create Account</h2>
                         <p class="text-muted">Join our learning community</p>
                     </div>
