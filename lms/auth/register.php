@@ -119,11 +119,11 @@ if ($flash) {
                             <h5>Learn</h5>
                             <p>Access thousands of courses from expert instructors</p>
                         </div>
-                        <div class="col-md-4">
+                        <!--div class="col-md-4">
                             <i class="fas fa-certificate fa-3x mb-3"></i>
                             <h5>Earn</h5>
                             <p>Get certificates upon completion</p>
-                        </div>
+                        </div-->
                         <div class="col-md-4">
                             <i class="fas fa-trophy fa-3x mb-3"></i>
                             <h5>Grow</h5>

@@ -235,7 +235,7 @@ $stats = get_system_stats();
                                 <p class="card-text text-muted">
                                     <?= truncate_text($category['description'], 80) ?>
                                 </p>
-                                <a href="courses/index.php?category=<?= $category['id'] ?>" class="btn btn-outline-primary">
+                                <a href="/courses/index.php?category=<?= $category['id'] ?>" class="btn btn-outline-primary">
                                     Browse Courses
                                 </a>
                             </div>
@@ -324,7 +324,7 @@ $stats = get_system_stats();
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <!--div class="col-md-6">
                             <div class="d-flex align-items-start">
                                 <i class="fas fa-certificate fa-2x text-success me-3 mt-1"></i>
                                 <div>
@@ -332,7 +332,7 @@ $stats = get_system_stats();
                                     <p class="text-muted">Earn certificates upon course completion to showcase your skills.</p>
                                 </div>
                             </div>
-                        </div>
+                        </div-->
                         <div class="col-md-6">
                             <div class="d-flex align-items-start">
                                 <i class="fas fa-clock fa-2x text-info me-3 mt-1"></i>
