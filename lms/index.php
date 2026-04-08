@@ -395,7 +395,7 @@ $stats = get_system_stats();
                         <a href="#" class="text-light"><i class="fab fa-facebook fa-lg"></i></a>
                         <a href="#" class="text-light"><i class="fab fa-twitter fa-lg"></i></a>
                         <a href="#" class="text-light"><i class="fab fa-linkedin fa-lg"></i></a>
-                        <a href="#" class="text-light"><i class="fab fa-youtube fa-lg"></i></a>
+                        <a href="https://www.youtube.com/@thelivingmiracles" class="text-light"><i class="fab fa-youtube fa-lg"></i></a>
                     </div>
                 </div>
                 

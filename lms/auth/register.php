@@ -103,10 +103,10 @@ if ($flash) {
     <link href="../assets/css/style.css" rel="stylesheet">
 </head>
 <body class="auth-page">
-    <div class="container-fluid h-100">
-        <div class="row h-100 p-5 m-5">
+    <div class="container-fluid h-90 card">
+        <div class="row h-100 p-5">
             <!-- Left side - Branding -->
-            <div class="col-lg-6 d-flex align-items-center justify-content-center bg-success text-white p-5">
+            <div class="col-lg-8 d-flex align-items-center justify-content-center bg-success text-white p-5">
                 <div class="text-center">
                     <h1><i class="fas fa-user-plus me-3 py-5 fa-2x"></i></h1>
                     <h1 class="display-4 fw-bold mb-4">                        
@@ -134,7 +134,7 @@ if ($flash) {
             </div>
             
             <!-- Right side - Registration Form -->
-            <div class="col-lg-6 d-flex align-items-center justify-content-center p-1">
+            <div class="col-lg-4 d-flex align-items-center justify-content-center p-1">
                 <div class="register-form-container">
                     <div class="text-center mb-5">
                         <h2 class="fw-bold text-dark">Create Account</h2>

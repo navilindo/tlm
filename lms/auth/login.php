@@ -75,17 +75,17 @@ if ($flash) {
     <link href="../assets/css/style.css" rel="stylesheet">
 </head>
 <body class="auth-page">
-    <div class="container-fluid h-100">
-        <div class="row h-100">
+    <div class="container-fluid h-100 card p-5">
+        <div class="row h-100 m-5 p-5">
             <!-- Left side - Branding -->
-            <div class="col-lg-6 d-flex align-items-center justify-content-center bg-primary text-white">
+            <div class="col-lg-8 d-flex align-items-center justify-content-center bg-primary text-white">
                 <div class="text-center">
+                    <h1><i class="fas fa-graduation-cap me-3 fa-2x"></i></h1>
                     <h1 class="display-4 fw-bold mb-4">
-                        <i class="fas fa-graduation-cap me-3"></i>
                         <?= SITE_NAME ?>
                     </h1>
                     <p class="lead mb-4">Welcome to your learning platform</p>
-                    <div class="row">
+                    <div class="row p-5">
                         <div class="col-md-4">
                             <i class="fas fa-book fa-3x mb-3"></i>
                             <h5>Learn</h5>
@@ -106,7 +106,7 @@ if ($flash) {
             </div>
             
             <!-- Right side - Login Form -->
-            <div class="col-lg-6 d-flex align-items-center justify-content-center">
+            <div class="col-lg-4 d-flex align-items-center justify-content-center">
                 <div class="login-form-container">
                     <div class="text-center mb-4">
                         <h2 class="fw-bold text-dark">Sign In</h2>
