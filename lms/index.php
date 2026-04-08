@@ -369,7 +369,7 @@ $stats = get_system_stats();
                 <div class="col-lg-8 mx-auto">
                     <h2 class="display-5 fw-bold mb-4">Ready to Start Learning?</h2>
                     <p class="lead mb-4">
-                        Join thousands of learners who are already advancing their careers with our courses.
+                        Join thousands of learners who are already improving their lives with new perspectives from knowledge.
                     </p>
                     <div class="d-flex justify-content-center gap-3">
                         <a href="auth/register.php" class="btn btn-light btn-lg">

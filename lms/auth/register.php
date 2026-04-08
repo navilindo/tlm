@@ -108,8 +108,8 @@ if ($flash) {
             <!-- Left side - Branding -->
             <div class="col-lg-6 d-flex align-items-center justify-content-center bg-success text-white">
                 <div class="text-center">
-                    <h1 class="display-4 fw-bold mb-4">
-                        <i class="fas fa-user-plus me-3"></i>
+                    <h1><i class="fas fa-user-plus me-3"></i></h1>
+                    <h1 class="display-4 fw-bold mb-4">                        
                         Join <?= SITE_NAME ?>
                     </h1>
                     <p class="lead mb-4">Start your learning journey today</p>
