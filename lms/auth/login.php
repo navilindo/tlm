@@ -80,7 +80,7 @@ if ($flash) {
             <!-- Left side - Branding -->
             <div class="col-lg-8 d-flex align-items-center justify-content-center bg-primary text-white">
                 <div class="text-center">
-                    <h1><i class="fas fa-graduation-cap me-3 fa-2x"></i></h1>
+                    <h1><i class="fas fa-graduation-cap me-3 fa-2x py-5"></i></h1>
                     <h1 class="display-4 fw-bold mb-4">
                         <?= SITE_NAME ?>
                     </h1>
