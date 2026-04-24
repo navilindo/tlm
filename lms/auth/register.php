@@ -108,7 +108,7 @@ if ($flash) {
             <!-- Left side - Branding -->
             <div class="col-lg-8 d-flex align-items-center justify-content-center bg-success text-white p-5">
                 <div class="text-center">
-                    <h1><i class="fas fa-user-plus me-3 py-5 fa-2x"></i></h1>
+                    <h1><i class="fas fa-user-plus me-3 pt-5 fa-2x"></i></h1>
                     <h1 class="display-4 fw-bold mb-4">                        
                         Join <?= SITE_NAME ?>
                     </h1>
