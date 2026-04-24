@@ -320,7 +320,7 @@ $stats = get_system_stats();
                                 <i class="fas fa-chalkboard-teacher fa-2x text-primary me-3 mt-1"></i>
                                 <div>
                                     <h5>Expert Instructors</h5>
-                                    <p class="text-muted">Learn from industry professionals with real-world experience.</p>
+                                    <p class="text-muted">Learn from expert Islamic scholars and professionals with real-world experience.</p>
                                 </div>
                             </div>
                         </div>
@@ -410,12 +410,12 @@ $stats = get_system_stats();
                 </div>
                 
                 <div class="col-lg-2 col-md-6 mb-4">
-                    <h6>Company</h6>
+                    <h6>Academy</h6>
                     <ul class="list-unstyled">
                         <li><a href="#" class="text-muted">About Us</a></li>
                         <li><a href="#" class="text-muted">Contact</a></li>
                         <li><a href="#" class="text-muted">Blog</a></li>
-                        <li><a href="#" class="text-muted">Careers</a></li>
+                        <!-- <li><a href="#" class="text-muted">Careers</a></li> -->
                     </ul>
                 </div>
                 
@@ -424,18 +424,18 @@ $stats = get_system_stats();
                     <ul class="list-unstyled">
                         <li><a href="#" class="text-muted">Privacy Policy</a></li>
                         <li><a href="#" class="text-muted">Terms of Service</a></li>
-                        <li><a href="#" class="text-muted">Cookie Policy</a></li>
-                        <li><a href="#" class="text-muted">DMCA</a></li>
+                        <!-- <li><a href="#" class="text-muted">Cookie Policy</a></li>
+                        <li><a href="#" class="text-muted">DMCA</a></li> -->
                     </ul>
                 </div>
                 
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6>Connect</h6>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-muted">Newsletter</a></li>
+                        <!-- <li><a href="#" class="text-muted">Newsletter</a></li> -->
                         <li><a href="#" class="text-muted">Support</a></li>
                         <li><a href="#" class="text-muted">Community</a></li>
-                        <li><a href="#" class="text-muted">Mobile App</a></li>
+                        <!-- <li><a href="#" class="text-muted">Mobile App</a></li> -->
                     </ul>
                 </div>
             </div>
