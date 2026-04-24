@@ -204,14 +204,14 @@ if ($flash) {
                     </form>
                     
                     <!-- Demo Accounts -->
-                    <div class="mt-4 p-3 bg-light rounded">
+                    <!-- <div class="mt-4 p-3 bg-light rounded">
                         <h6 class="text-muted mb-2">Demo Accounts:</h6>
                         <small class="text-muted">
                             <strong>Admin:</strong> admin@lms.com / admin123<br>
                             <strong>Instructor:</strong> instructor@lms.com / instructor123<br>
                             <strong>Student:</strong> student@lms.com / student123
                         </small>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
