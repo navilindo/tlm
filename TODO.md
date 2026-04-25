@@ -8,9 +8,9 @@
 5. Update `lms/auth/login.php` - Add resend verification link when login fails due to unverified email
 
 ## Status
-- [ ] Step 1: Create verify-email.php
-- [ ] Step 2: Update functions.php send_notification_email()
-- [ ] Step 3: Update auth.php register_user()
-- [ ] Step 4: Create resend-verification.php
-- [ ] Step 5: Update login.php with resend link
+- [x] Step 1: Create verify-email.php
+- [x] Step 2: Update functions.php send_notification_email()
+- [x] Step 3: Update auth.php register_user()
+- [x] Step 4: Create resend-verification.php
+- [x] Step 5: Update login.php with resend link
 
