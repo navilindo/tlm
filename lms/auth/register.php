@@ -63,7 +63,10 @@ if (is_post()) {
         // Check if email verification is required
         $require_verification = get_system_setting('email_verification_required');
         if ($require_verification === 'true') {
-            redirect_with_message('login.php', 'Registration successful! Please check your email to verify your account before logging in.', 'info');
+            // Store email in session for the verification-sent page
+            $_SESSION['pending_verification_email'] = $email;
+            header('Location: verification-sent.php');
+            exit;
         } else {
             // Auto-login and redirect
             $user = login_user($email, $password);
@@ -152,6 +155,16 @@ if ($flash) {
                         <div class="alert alert-success" role="alert">
                             <i class="fas fa-check-circle me-2"></i>
                             <?= escape_html($success) ?>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php
+                    $require_verification = get_system_setting('email_verification_required');
+                    if ($require_verification === 'true' && !$success):
+                    ?>
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Email verification required.</strong> After registering, you will receive a verification email. Please click the link in the email to activate your account.
                         </div>
                     <?php endif; ?>
                     

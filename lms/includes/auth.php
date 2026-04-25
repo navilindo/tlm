@@ -34,7 +34,10 @@ function register_user($email, $password, $first_name, $last_name, $role = ROLE_
     // Send verification email
     $require_verification = get_system_setting('email_verification_required');
     if ($require_verification === 'true') {
-        send_verification_email($email, $first_name, $verification_token);
+        $email_sent = send_verification_email($email, $first_name, $verification_token);
+        if (!$email_sent) {
+            log_security_event('verification_email_failed', "Failed to send verification email to: {$email}");
+        }
     }
     
     // Log activity

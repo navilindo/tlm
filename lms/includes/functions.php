@@ -563,10 +563,11 @@ function send_verification_email($email, $first_name, $verification_token) {
     
     // If HTML failed, try plain text
     if (!$html_sent) {
-        send_notification_email($email, $subject, $text_message, 'verification', false);
+        $plain_sent = send_notification_email($email, $subject, $text_message, 'verification', false);
+        return $plain_sent;
     }
     
-    return true;
+    return $html_sent;
 }
 
 /**
