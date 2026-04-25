@@ -117,6 +117,13 @@ if ($flash) {
                         <div class="alert alert-danger" role="alert">
                             <i class="fas fa-exclamation-triangle me-2"></i>
                             <?= escape_html($error) ?>
+                            <?php if (strpos($error, 'verify your email') !== false): ?>
+                                <div class="mt-2">
+                                    <a href="resend-verification.php" class="alert-link">
+                                        <i class="fas fa-envelope me-1"></i>Resend verification email
+                                    </a>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     <?php endif; ?>
                     

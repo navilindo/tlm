@@ -31,6 +31,12 @@ function register_user($email, $password, $first_name, $last_name, $role = ROLE_
     $sql = "INSERT INTO users (email, password_hash, first_name, last_name, role, verification_token) VALUES (?, ?, ?, ?, ?, ?)";
     $user_id = $db->insert($sql, [$email, $password_hash, $first_name, $last_name, $role, $verification_token]);
     
+    // Send verification email
+    $require_verification = get_system_setting('email_verification_required');
+    if ($require_verification === 'true') {
+        send_verification_email($email, $first_name, $verification_token);
+    }
+    
     // Log activity
     log_security_event('user_registered', "User registered: {$email}");
     
