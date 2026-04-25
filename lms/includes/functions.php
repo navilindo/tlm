@@ -474,17 +474,97 @@ function generate_pagination($current_page, $total_pages, $base_url) {
 }
 
 /**
- * Send notification email (placeholder)
+ * Send notification email
+ * Supports HTML and plain text emails
  */
-function send_notification_email($to, $subject, $message, $type = 'general') {
-    // TODO: Implement email sending
-    // For now, just log the email
-    error_log("Email notification - To: {$to}, Subject: {$subject}, Type: {$type}");
+function send_notification_email($to, $subject, $message, $type = 'general', $is_html = true) {
+    // Build email headers
+    $headers = "From: " . FROM_NAME . " <" . FROM_EMAIL . ">\r\n";
+    $headers .= "Reply-To: " . FROM_EMAIL . "\r\n";
     
-    // Add to email queue
+    if ($is_html) {
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+    } else {
+        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+    }
+    
+    // Attempt to send email using PHP mail()
+    $mail_sent = mail($to, $subject, $message, $headers);
+    
+    // Log the email attempt
+    error_log("Email notification - To: {$to}, Subject: {$subject}, Type: {$type}, Sent: " . ($mail_sent ? 'Yes' : 'No'));
+    
+    // Add to email queue for tracking
     $db = getDB();
-    $sql = "INSERT INTO email_queue (recipient_email, subject, message, type) VALUES (?, ?, ?, ?)";
-    $db->execute($sql, [$to, $subject, $message, $type]);
+    $sql = "INSERT INTO email_queue (recipient_email, subject, message, type, status, sent_at) VALUES (?, ?, ?, ?, ?, ?)";
+    $status = $mail_sent ? 'sent' : 'pending';
+    $sent_at = $mail_sent ? date('Y-m-d H:i:s') : null;
+    $db->execute($sql, [$to, $subject, $message, $type, $status, $sent_at]);
+    
+    return $mail_sent;
+}
+
+/**
+ * Send email verification email to user
+ */
+function send_verification_email($email, $first_name, $verification_token) {
+    $verification_url = SITE_URL . '/auth/verify-email.php?token=' . urlencode($verification_token);
+    
+    $subject = 'Verify Your Email Address - ' . SITE_NAME;
+    
+    $html_message = '
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Email Verification</title>
+        <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+            .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+            .button { display: inline-block; background: #667eea; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+            .footer { text-align: center; margin-top: 20px; color: #666; font-size: 12px; }
+            .link-box { background: #e9e9e9; padding: 15px; border-radius: 5px; word-break: break-all; margin: 15px 0; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Welcome to ' . SITE_NAME . '</h1>
+            </div>
+            <div class="content">
+                <h2>Hello ' . escape_html($first_name) . ',</h2>
+                <p>Thank you for registering with ' . SITE_NAME . '. To complete your registration and verify your email address, please click the button below:</p>
+                <div style="text-align: center;">
+                    <a href="' . $verification_url . '" class="button">Verify My Email Address</a>
+                </div>
+                <p>Or copy and paste this link into your browser:</p>
+                <div class="link-box">' . $verification_url . '</div>
+                <p><strong>Note:</strong> This verification link is valid for 24 hours. If you did not create an account with us, please ignore this email.</p>
+            </div>
+            <div class="footer">
+                <p>&copy; ' . date('Y') . ' ' . SITE_NAME . '. All rights reserved.</p>
+            </div>
+        </div>
+    </body>
+    </html>';
+    
+    $text_message = "Hello {$first_name},\n\n";
+    $text_message .= "Thank you for registering with " . SITE_NAME . ". To complete your registration and verify your email address, please visit the following link:\n\n";
+    $text_message .= $verification_url . "\n\n";
+    $text_message .= "Note: This verification link is valid for 24 hours. If you did not create an account with us, please ignore this email.\n\n";
+    $text_message .= "© " . date('Y') . " " . SITE_NAME . ". All rights reserved.";
+    
+    // Send HTML version
+    $html_sent = send_notification_email($email, $subject, $html_message, 'verification', true);
+    
+    // If HTML failed, try plain text
+    if (!$html_sent) {
+        send_notification_email($email, $subject, $text_message, 'verification', false);
+    }
     
     return true;
 }
