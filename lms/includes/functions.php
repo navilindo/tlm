@@ -489,20 +489,17 @@ function send_notification_email($to, $subject, $message, $type = 'general', $is
         $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
     }
     
-    // Attempt to send email using PHP mail()
-    $mail_sent = mail($to, $subject, $message, $headers);
-    
-    // Log the email attempt
-    error_log("Email notification - To: {$to}, Subject: {$subject}, Type: {$type}, Sent: " . ($mail_sent ? 'Yes' : 'No'));
-    
-    // Add to email queue for tracking
+    // In many dev environments, `mail()` cannot deliver because sendmail/SMTP is missing.
+    // So we always enqueue the email and let a worker deliver it.
+
+    error_log("Email queued - To: {$to}, Subject: {$subject}, Type: {$type}");
+
     $db = getDB();
-    $sql = "INSERT INTO email_queue (recipient_email, subject, message, type, status, sent_at) VALUES (?, ?, ?, ?, ?, ?)";
-    $status = $mail_sent ? 'sent' : 'pending';
-    $sent_at = $mail_sent ? date('Y-m-d H:i:s') : null;
-    $db->execute($sql, [$to, $subject, $message, $type, $status, $sent_at]);
-    
-    return $mail_sent;
+    $sql = "INSERT INTO email_queue (recipient_email, subject, message, type, status) VALUES (?, ?, ?, ?, 'pending')";
+    $db->execute($sql, [$to, $subject, $message, $type]);
+
+    return true;
+
 }
 
 /**
